@@ -1,0 +1,282 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SS PHOTOGRAPHY | Premium Photography</title>
+<style>
+:root{--gold:#d6ad55;--black:#090909;--panel:#171717;--muted:#b8b8b8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--black);color:#fff;font-family:Arial,sans-serif}
+header{padding:18px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #40331c;gap:12px;flex-wrap:wrap}
+.brand{font-size:23px;font-weight:bold;color:var(--gold);letter-spacing:2px}
+nav a{color:#eee;text-decoration:none;margin:0 8px}
+button,.btn{background:var(--gold);color:#111;border:0;padding:12px 17px;border-radius:7px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.5}
+.hero{padding:75px 7%;text-align:center;background:linear-gradient(#0009,#000d),url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1600&q=85') center/cover}
+.hero h1{font-size:clamp(34px,7vw,65px);margin:0 0 12px}
+.gold{color:var(--gold)}
+section{padding:35px 6%;max-width:1150px;margin:auto}
+h2{color:var(--gold)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.card,.panel{background:var(--panel);border:1px solid #44371f;border-radius:12px;padding:20px}
+.card p,.muted{color:var(--muted);line-height:1.5}
+label{display:block;margin:12px 0 6px;color:#eee}
+input,select,textarea{width:100%;padding:12px;border-radius:7px;border:1px solid #4a4a4a;background:#0e0e0e;color:white}
+input[type=checkbox]{width:auto}
+form{max-width:650px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.hidden{display:none!important}
+.item{border-bottom:1px solid #383838;padding:14px 0}
+footer{text-align:center;padding:28px;color:#aaa;border-top:1px solid #333}
+a{color:var(--gold)}
+#notice{margin:12px 0;color:var(--gold);white-space:pre-wrap}
+img.gallery{width:100%;height:190px;object-fit:cover;border-radius:8px}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">SS PHOTOGRAPHY</div>
+  <nav>
+    <a href="#services">Services</a>
+    <a href="#booking">Booking</a>
+    <a href="#gallery">Gallery</a>
+  </nav>
+  <button id="logoutBtn" class="hidden">Logout</button>
+</header>
+
+<div class="hero">
+  <p class="gold">CAPTURING YOUR BEST MOMENTS</p>
+  <h1>Every Picture Tells<br><span class="gold">Your Story</span></h1>
+  <p>Wedding • Birthday • Portrait • Pre-Wedding</p>
+  <a class="btn" href="#booking">Book Your Session</a>
+</div>
+
+<section id="account">
+  <h2>Customer Login / Register</h2>
+  <div class="panel">
+    <p class="muted">Booking କରିବା ପୂର୍ବରୁ Email ଦ୍ୱାରା login କରନ୍ତୁ।</p>
+    <form id="authForm">
+      <label>Email</label><input id="email" type="email" required autocomplete="email">
+      <label>Password</label><input id="password" type="password" minlength="6" required autocomplete="current-password">
+      <div class="row" style="margin-top:15px">
+        <button type="submit" id="loginBtn">Login</button>
+        <button type="button" id="registerBtn">Create Account</button>
+      </div>
+    </form>
+    <div id="authNotice" role="status"></div>
+  </div>
+</section>
+
+<section id="services">
+  <h2>Our Photography Services</h2>
+  <p class="muted">Service, total price ଓ advance admin ଙ୍କ ଦ୍ୱାରା set ହେବ।</p>
+  <div id="serviceList" class="grid"><p>Loading services...</p></div>
+</section>
+
+<section id="booking">
+  <h2>Book Your Photography</h2>
+  <div class="panel">
+    <form id="bookingForm">
+      <label>Customer Name</label><input id="customerName" required maxlength="100">
+      <label>Mobile Number</label><input id="mobile" type="tel" required pattern="[0-9+ ()-]{8,18}">
+      <label>Choose Service</label><select id="service" required><option value="">Select service</option></select>
+      <div class="row">
+        <div><label>Start Date</label><input id="startDate" type="date" required></div>
+        <div><label>End Date</label><input id="endDate" type="date" required></div>
+      </div>
+      <div class="row">
+        <div><label>Start Time</label><input id="startTime" type="time" required></div>
+        <div><label>End Time</label><input id="endTime" type="time" required></div>
+      </div>
+      <label>Event Location</label><input id="eventLocation" required maxlength="200">
+      <label>Booking Details</label><textarea id="details" rows="3" maxlength="1000" placeholder="Wedding, birthday, number of photos, etc."></textarea>
+      <div class="panel" style="margin:15px 0">
+        <p>Total Price: <strong id="totalPrice">₹0</strong></p>
+        <p>Advance Due: <strong id="advancePrice">₹0</strong></p>
+        <p>Remaining After Advance: <strong id="remainingPrice">₹0</strong></p>
+      </div>
+      <label><input id="terms" type="checkbox" required> I confirm the booking details are correct.</label>
+      <button type="submit" id="bookBtn">Submit Booking</button>
+    </form>
+    <div id="bookingNotice" role="status"></div>
+  </div>
+</section>
+
+<section id="payment">
+  <h2>Advance Payment</h2>
+  <div class="panel">
+    <p>Booking submit ପରେ admin ଙ୍କ UPI QR ଓ payment instruction ଦେଖନ୍ତୁ।</p>
+    <p class="muted">UPI payment କରିଲେ transaction reference ସୁରକ୍ଷିତ ରଖନ୍ତୁ। Admin verify କରିବା ପରେ payment status update ହେବ।</p>
+    <div id="paymentInfo">Payment instructions will appear here when configured by admin.</div>
+  </div>
+</section>
+
+<section id="history">
+  <h2>My Booking History</h2>
+  <div id="historyList" class="panel">Login କଲେ ତୁମ booking ଏଠାରେ ଦେଖାଯିବ।</div>
+</section>
+
+<section id="gallery">
+  <h2>Our Gallery</h2>
+  <div id="galleryList" class="grid"><p>Gallery loading...</p></div>
+</section>
+
+<footer>
+  <p class="brand">SS PHOTOGRAPHY</p>
+  <p>Dakuluguda</p>
+  <p>Booking confirmation and payment status are subject to verification.</p>
+</footer>
+
+<script type="module">
+import {auth, db} from "./firebase-config.js";
+import {
+  createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  onAuthStateChanged, signOut
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import {
+  collection, addDoc, getDocs, query, where, orderBy,
+  doc, getDoc, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+const $ = id => document.getElementById(id);
+let currentUser = null;
+let services = [];
+
+const defaults = [
+ {id:"birthday",name:"Birthday Photography",price:3000,advance:500,duration:"3 hours"},
+ {id:"prewedding",name:"Pre-Wedding Shoot",price:8000,advance:2000,duration:"1 day"},
+ {id:"wedding",name:"Wedding Photography",price:20000,advance:5000,duration:"2 days"},
+ {id:"portrait",name:"Portrait Photoshoot",price:1500,advance:300,duration:"1 hour"},
+ {id:"event",name:"Event Photography",price:5000,advance:1000,duration:"4 hours"}
+];
+
+function money(n){return "₹"+Number(n||0).toLocaleString("en-IN")}
+function msg(id,text){$(id).textContent=text}
+function safeText(value){return String(value??"")}
+function escapeHtml(s){return safeText(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+
+$("authForm").addEventListener("submit",async e=>{
+ e.preventDefault();msg("authNotice","Logging in...");
+ try{
+  await signInWithEmailAndPassword(auth,$("email").value.trim(),$("password").value);
+  msg("authNotice","Login successful.");
+ }catch(err){msg("authNotice","Login failed: "+err.message)}
+});
+
+$("registerBtn").addEventListener("click",async()=>{
+ if(!$("authForm").reportValidity())return;
+ msg("authNotice","Creating account...");
+ try{
+  await createUserWithEmailAndPassword(auth,$("email").value.trim(),$("password").value);
+  msg("authNotice","Account created successfully.");
+ }catch(err){msg("authNotice","Registration failed: "+err.message)}
+});
+
+$("logoutBtn").addEventListener("click",()=>signOut(auth));
+
+async function loadServices(){
+ try{
+  const snap=await getDocs(collection(db,"services"));
+  services=snap.docs.map(d=>({id:d.id,...d.data()}))
+    .filter(s=>s.active!==false && typeof s.name==="string" && Number.isFinite(Number(s.price)) && Number(s.price)>=0 && Number.isFinite(Number(s.advance)) && Number(s.advance)>=0 && Number(s.advance)<=Number(s.price));
+  if(!services.length)services=defaults;
+ }catch(e){services=defaults;console.warn("Service load:",e)}
+ $("serviceList").innerHTML="";
+ $("service").innerHTML='<option value="">Select service</option>';
+ for(const s of services){
+  const card=document.createElement("article");card.className="card";
+  card.innerHTML=`<h3>${escapeHtml(s.name)}</h3><p>${escapeHtml(s.description||s.duration||"Professional photography")}</p><p>Total: <b>${money(s.price)}</b></p><p>Advance: <b>${money(s.advance)}</b></p><p>Balance: ${money(Number(s.price)-Number(s.advance))}</p>`;
+  $("serviceList").appendChild(card);
+  const option=document.createElement("option");option.value=s.id;option.textContent=`${s.name} — ${money(s.price)}`;$("service").appendChild(option);
+ }
+ updatePrice();
+}
+function updatePrice(){
+ const s=services.find(x=>x.id===$("service").value);
+ $("totalPrice").textContent=money(s?.price||0);
+ $("advancePrice").textContent=money(s?.advance||0);
+ $("remainingPrice").textContent=money(s?Number(s.price)-Number(s.advance):0);
+}
+$("service").addEventListener("change",updatePrice);
+
+$("bookingForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ if(!currentUser){msg("bookingNotice","ପ୍ରଥମେ Login କରନ୍ତୁ।");$("account").scrollIntoView();return}
+ const s=services.find(x=>x.id===$("service").value);
+ if(!s){msg("bookingNotice","ଦୟାକରି service ବାଛନ୍ତୁ।");return}
+ const start=$("startDate").value,end=$("endDate").value;
+ const st=$("startTime").value,et=$("endTime").value;
+ if(end<start || (end===start && et<=st)){msg("bookingNotice","End date/time ଠିକ୍ କରନ୍ତୁ।");return}
+ if(start<new Date().toLocaleDateString("en-CA")){msg("bookingNotice","Past date ରେ booking ହେବ ନାହିଁ।");return}
+ $("bookBtn").disabled=true;msg("bookingNotice","Submitting booking...");
+ try{
+  const ref=await addDoc(collection(db,"bookings"),{
+   uid:currentUser.uid,email:currentUser.email,
+   customerName:$("customerName").value.trim(),
+   mobile:$("mobile").value.trim(),
+   serviceId:s.id,serviceName:s.name,
+   totalPrice:Number(s.price),advanceDue:Number(s.advance),
+   remainingBalance:Number(s.price)-Number(s.advance),
+   startDate:start,endDate:end,startTime:st,endTime:et,
+   eventLocation:$("eventLocation").value.trim(),
+   details:$("details").value.trim(),
+   status:"Pending",paymentStatus:"Unpaid",
+   paymentReference:"",createdAt:serverTimestamp()
+  });
+  msg("bookingNotice","Booking submitted! ID: "+ref.id+"\\nStatus: Pending. Advance ପାଇଁ admin ଙ୍କ payment instruction ଅନୁସରଣ କରନ୍ତୁ।");
+  $("bookingForm").reset();updatePrice();await loadHistory();
+ }catch(err){msg("bookingNotice","Booking failed: "+err.message)}
+ finally{$("bookBtn").disabled=false}
+});
+
+async function loadHistory(){
+ if(!currentUser){$("historyList").textContent="Login କଲେ ତୁମ booking ଦେଖାଯିବ।";return}
+ $("historyList").textContent="Loading...";
+ try{
+  const q=query(collection(db,"bookings"),where("uid","==",currentUser.uid));
+  const snap=await getDocs(q);
+  const items=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.startDate||"").localeCompare(a.startDate||""));
+  if(!items.length){$("historyList").textContent="ଏପର୍ଯ୍ୟନ୍ତ booking ନାହିଁ।";return}
+  $("historyList").innerHTML=items.map(b=>`<div class="item"><h3>${escapeHtml(b.serviceName)}</h3><p>Date: ${escapeHtml(b.startDate)} to ${escapeHtml(b.endDate)}</p><p>Time: ${escapeHtml(b.startTime)}–${escapeHtml(b.endTime)}</p><p>Total: ${money(b.totalPrice)} | Advance: ${money(b.advanceDue)} | Balance: ${money(b.remainingBalance)}</p><p>Booking: <b>${escapeHtml(b.status)}</b> | Payment: <b>${escapeHtml(b.paymentStatus)}</b></p><small>Booking ID: ${escapeHtml(b.id)}</small></div>`).join("");
+ }catch(err){$("historyList").textContent="History load failed: "+err.message}
+}
+
+async function loadGallery(){
+ try{
+  const snap=await getDocs(collection(db,"gallery"));
+  const photos=snap.docs.map(d=>d.data()).filter(p=>p.active!==false && p.imageUrl);
+  $("galleryList").innerHTML=photos.length?photos.map(p=>`<div class="card"><img class="gallery" loading="lazy" src="${escapeHtml(p.imageUrl)}" alt="${escapeHtml(p.title||"SS Photography")}"><p>${escapeHtml(p.title||"SS Photography")}</p></div>`).join(""):"<p>Gallery photos will appear here soon.</p>";
+ }catch(e){$("galleryList").textContent="Gallery will be available soon."}
+}
+
+async function loadPaymentInfo(){
+ try{
+  const snap=await getDoc(doc(db,"settings","public"));
+  if(!snap.exists())return;
+  const p=snap.data();
+  const box=$("paymentInfo");
+  box.replaceChildren();
+  if(p.upiId){const line=document.createElement("p");line.textContent="UPI ID: "+p.upiId;box.appendChild(line)}
+  if(p.qrUrl){const img=document.createElement("img");img.src=p.qrUrl;img.alt="UPI payment QR";img.style.maxWidth="230px";img.style.width="100%";box.appendChild(img)}
+  if(p.paymentInstructions){const note=document.createElement("p");note.textContent=p.paymentInstructions;box.appendChild(note)}
+  if(!p.upiId&&!p.qrUrl&&!p.paymentInstructions)box.textContent="Admin has not configured payment details yet.";
+ }catch(e){console.warn("Payment settings:",e)}
+}
+
+onAuthStateChanged(auth,async user=>{
+ currentUser=user;
+ $("logoutBtn").classList.toggle("hidden",!user);
+ $("bookingForm").querySelectorAll("input,select,textarea,button").forEach(el=>el.disabled=!user);
+ if(user){msg("authNotice","Logged in as "+user.email);await loadHistory()}
+ else{msg("authNotice","Login କରି booking କରନ୍ତୁ।");await loadHistory()}
+});
+
+loadServices();
+loadGallery();
+loadPaymentInfo();
+</script>
+</body>
+  </html>
+  
